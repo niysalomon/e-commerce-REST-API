@@ -1,4 +1,4 @@
-CREATE DATABASE ecommerce;
+CREATE DATABASE ecommerceApp;
 
 CREATE TABLE users(
     user_id PRIMARY KEY,
