@@ -27,21 +27,41 @@ res.send(addUser.rows[0]);
         res.send(error.message);
     }
 })
-
-router.get('/login',async(req,res)=>{
-const{username,password} = req.body;
-try {
-    const auth= await db.query("SELECT * FROM users WHERE username=$1 AND password=$2",[username,password]);
-if(auth){
-    res.status(200).send(auth.rows[0]);   
-}
-else {
-    res.status(200).json('username or password is incorrect!! please try again!');
-}
-} catch (error) {
-    res.status(401).send(error.message);
-    
-}
+// UDATING USER
+router.put('/users/:id',async(req,res)=>{
+    const {id}=req.params;    
+    const{firstname,lastname,email,telephone,username,password} = req.body;
+    try {
+         
+    const UpdateUser= await db.query("UPDATE users SET firstname=$1, lastname=$2,email=$3, telephone=$4, username=$5,password=$6 WHERE user_id=$7",[firstname,lastname,email,telephone,username,password,id]);
+    if(UpdateUser){
+    res.json("user updated successful!");
+     }
+     else{
+    res.json("user failed to be updated successful!");
+     }   
+} 
+catch (error) {
+    res.send(error.message); 
+ }
 })
+
+//DELETE USERS
+
+router.delete('/users/delete/:id',async(req,res)=>{
+    const{id} = req.params;
+    try {
+        const deleteUser = await db.query("DELETE FROM users WHERE user_id=$1",[id]);
+        if(deleteUser){
+            res.send("User deleted successful!");
+        }
+        else{
+            res.send("user failed to be deleted!");
+        }
+    } catch (error) {
+        res.json(error.message);
+    }
+})
+
 
 module.exports=router;
